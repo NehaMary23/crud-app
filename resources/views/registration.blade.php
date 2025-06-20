@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="col-md-6 right">
-                <h4>USER SIGN IN</h4>
+                <h4>USER SIGN UP</h4>
 
                 <form action="{{ route('registration.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
