@@ -1,44 +1,3 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png')}}">
-    <link rel='stylesheet' href="{{ asset('css/edit.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-</head>
-<body>        
-    <form action="{{ route('registration.post') }}" method="POST" >
-        @csrf
-        <label for="Username">Username</label><br>
-        <input type="text" name="username" required><br><br>
-        <label for="Email">Email</label><br>
-        <input type="text" name="email" required><br><br>
-        <label for="Password">Password</label><br>
-        <input type="password" name="password" required><br><br>
-        <button class="btn btn-dark" type="submit">Sign Up</button>
-    </form>
-    <a href="{{ route('login')}}">Already have an account? Log in!</a>
-    @if ($errors->any())
-        <ul>
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
-
-    @if (session()->has('error'))
-        {{session('error')}}
-    @endif
-    @if (session()->has('success'))
-        {{session('success')}}
-    @endif
-</body>
-</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +27,7 @@
             <div class="col-md-6 right">
                 <h4>USER SIGN IN</h4>
 
-                <form action="{{ route('registration.post') }}" method="POST" >
+                <form action="{{ route('registration.post') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <label for="Username">Username</label>
                     <div class="input-container">
@@ -78,6 +37,7 @@
                             <div class="error-text">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <label for="Email">Email</label>
                     <div class="input-container">
                         <i class="fa fa-envelope"></i>
@@ -86,6 +46,7 @@
                             <div class="error-text">{{ $message }}</div>
                         @enderror
                     </div>
+
                     <label for="Password">Password</label>
                     <div class="input-container">
                         <i class="fa fa-lock"></i>
@@ -93,7 +54,7 @@
                         @error('password')
                             <div class="error-text">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div>                                      
                     <button class="btn btn-dark" type="submit">Sign Up</button>
                 </form>
             </div>

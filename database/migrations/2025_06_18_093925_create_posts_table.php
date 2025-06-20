@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('login_id')->constrained('logins')->onDelete('cascade');
             $table->string('title');
             $table->text('body');
+            $table->string('image');
             $table->timestamps();
         });
     }

@@ -31,4 +31,5 @@ class ForgotPasswordController extends Controller
         }        
         return redirect(route('forgot'))->with('error','Invalid Email');
     }
+    
 }

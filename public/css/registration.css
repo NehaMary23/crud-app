@@ -2,8 +2,8 @@
 .container {
     background-color:rgba(230, 230, 241, 0.986);
     margin: auto;
-    margin-top: 4%;
-    margin-bottom: 5%;
+    margin-top: 2%;
+    margin-bottom: 1rem;
     border-radius: 30px;
     
 }
@@ -51,7 +51,7 @@ label {
 .container .right .btn {
     border-radius: 20px !important;
     padding: 8px 15px !important;
-    margin-top: 5%;
+    
 }
 
 .container .left .btn {
@@ -151,3 +151,7 @@ label {
     }
 }
 
+.image {
+    margin-left: 8%;
+    margin-top: 2%;
+}

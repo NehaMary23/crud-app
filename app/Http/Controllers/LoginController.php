@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     
     function login()
     {
@@ -30,7 +27,7 @@ class LoginController extends Controller
     {
         $request->validate([
             'email' => 'required|email',          //validation process 
-            'password' => 'required',
+            'password' => 'required|min:6',
         ]);
 
         $credentials=$request->only('email','password');
@@ -41,24 +38,28 @@ class LoginController extends Controller
         return redirect(route('login'))->with('error','Login Details are Invalid');
     }
 
-     function registrationPost(Request $request)
+     
+    public function registrationPost(Request $request)
     {
         $request->validate([
-            'username'=>'required',
-            'email' => 'required|email',          //validation process 
+            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
+            
+        $data['username'] = $request->username;
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
 
-        $data['username']=$request->username;
-        $data['email']=$request->email;
-        $data['password']=HASH::make($request->password);
-        $user=LOGIN::create($data);
-        if(!$user)
-        {
-            return redirect(route('registration'))->with('error','Try Again');
+        $user = Login::create($data);
+
+        if (!$user) {
+            return redirect(route('registration'))->with('error', 'Try Again');
         }
-        return redirect(route('login'))->with('success','Registration Succesful');
+
+        return redirect(route('login'))->with('success', 'Registration Successful');
     }
+
 
     function logout()
     {

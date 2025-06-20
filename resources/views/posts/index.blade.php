@@ -30,12 +30,21 @@
         </div>
     </div>
     
+    <div class="search">
+        <form action="{{ route('posts.index') }}" method="GET" class="d-flex mb-3">
+            <input type="text" name="search" placeholder="Search by title..." value="{{ request('search') }}">
+            <button type="submit" class="btn btn-dark">Search</button>
+        </form>
+    </div>
+
     <div class="posts">
         <a href="{{ route('posts.create') }}" class="atag">✯ Create New Post ✯</a>   <!--Creates a link to the create() in the PostController since posts is the route created
-                                                                    linking to PostController class {this posts is defined inside web.php}-->
+                                                                    linking to PostController class {this posts is defined inside web.php}-->        
+                                                                    
         <div class="post-action">
             @foreach($posts as $post)
                 <div class="post">
+                    <img src="{{ asset('uploads/' . $post->image) }}" alt="image" style="max-width: 100%; height: 100px;">
                     <h4>{{ $post->title }}</h4>
                     <p>{{ $post->body }}</p>
                     
@@ -46,8 +55,13 @@
                         <button class="btn btn-dark" type="submit" onclick="return confirm('Are you sure you want to delete the post?')">Delete</button>
                     </form>
                 </div>
-            @endforeach
+            @endforeach           
         </div>
+
+        <div class="pagination-links d-flex justify-content-center mt-4">
+            {{ $posts->appends(['search' => request('search')])->links() }}
+        </div>
+
         
         
     </div>

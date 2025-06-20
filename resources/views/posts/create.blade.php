@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="posts">
-        <form method="POST" action="{{ route('posts.store') }}">
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
             <label for="Title">Title</label><br>
             <input type="text" placeholder="Enter Title" name="title" value="{{ old('title') }}" required><br><br>
@@ -37,6 +37,11 @@
             <label for="Body">Body</label><br>
             <textarea name="body" placeholder="Enter Message" required>{{ old('body') }}</textarea><br><br>
 
+            <label for="Image">Upload Image</label>  <br>                  
+            <input type="file" name="image" accept="image/*" class="image" required><br>
+            @error('image')
+                <div class="error-text">{{ $message }}</div>
+            @enderror 
             <button type="submit" class="btn btn-dark">Save</button>
         </form>
     </div>

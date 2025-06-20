@@ -12,14 +12,17 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::where('login_id', auth()->id())->get();  //an array of all the posts created
-        return response()
-            ->view('posts.index', compact('posts'))
-            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
-            ->header('Pragma', 'no-cache')
-            ->header('Expires', '0');           //show index blade with contents(compact in)'posts'->which has all the posts from above statement
+        $query = Post::where('login_id', auth()->id());    //an array of all the posts created
+
+        if ($request->has('search') && $request->search !== '') {
+            $query->where('title', 'like', $request->search . '%');
+        }
+
+        $posts = $query->latest()->paginate(6);
+
+        return view('posts.index', compact('posts')) ;                    //show index blade with contents(compact in)'posts'->which has all the posts from above statement
     }
 
     /**
@@ -38,15 +41,21 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required',          //validation process 
             'body' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads'), $imageName);
+        
         POST::create([
             'title' => $request->title,
             'body' => $request->body,
-            'login_id' => auth()->id()
+            'login_id' => auth()->id(),
+            'image' => $imageName,
         ]);
 
-        return redirect()->route('posts.index')->with('success','Post Created Succesfully');       //finally redirects to the index() in this with success msg if created successfully
+        
+        return redirect(route('posts.index'))->with('success', 'Post Created Succesfully');       //finally redirects to the index() in this with success msg if created successfully
     }
 
     /**
@@ -74,12 +83,20 @@ class PostController extends Controller
         $validated = $request->validate([
             'title' => 'required',
             'body' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $post = POST::findOrFail($id);  //find the post
-        $post->update($validated);      //update the post with validated content
 
-        return redirect()->route('posts.index')->with('success','Post Updated Succesfully');    //finally redirects to the index() in this with success msg if updated successfully
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads'), $imageName);
+
+         $post->update([
+            'title' => $validated['title'],
+            'body' => $validated['body'],
+            'image' => $imageName,
+        ]);
+        return redirect(route('posts.index'))->with('success', 'Post Updated Succesfully');    //finally redirects to the index() in this with success msg if updated successfully
     }
 
     /**
@@ -90,6 +107,6 @@ class PostController extends Controller
         $post = POST::findOrFail($id);  //find the post
         $post->delete();                //delete the post
 
-        return redirect()->route('posts.index')->with('success','Post Deleted Succesfully');    //finally redirects to the index blade in routes with success msg if deleted successfully
+        return redirect(route('posts.index'))->with('success', 'Post Deleted Succesfully');     //finally redirects to the index blade in routes with success msg if deleted successfully
     }
 }

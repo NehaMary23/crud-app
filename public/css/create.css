@@ -109,5 +109,17 @@ textarea::placeholder {
     padding: 10px 0 0 10px ;
 }
 
+.image {
+    margin-left: 4%;
+    margin-top: -2%;
+}
+
+.error-text {
+    color: red;
+    font-size: 12px;
+}
 
 
+.btn {
+    margin-top: 2% !important;
+}
